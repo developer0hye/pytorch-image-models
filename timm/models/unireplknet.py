@@ -60,11 +60,6 @@ class NHWCtoNCHW(nn.Module):
     def forward(self, x):
         return x.permute(0, 3, 1, 2)
 
-#================== This function decides which conv implementation (the native or iGEMM) to use
-#   Note that iGEMM large-kernel conv impl will be used if
-#       -   you attempt to do so (attempt_to_use_large_impl=True), and
-#       -   it has been installed (follow https://github.com/AILab-CVC/UniRepLKNet), and
-#       -   the conv layer is depth-wise, stride = 1, non-dilated, kernel_size > 5, and padding == kernel_size // 2
 def get_conv2d(in_channels, out_channels, kernel_size, stride, padding, dilation, groups, bias,
                attempt_use_lk_impl=True):
     kernel_size = to_2tuple(kernel_size)
@@ -72,20 +67,6 @@ def get_conv2d(in_channels, out_channels, kernel_size, stride, padding, dilation
         padding = (kernel_size[0] // 2, kernel_size[1] // 2)
     else:
         padding = to_2tuple(padding)
-    need_large_impl = kernel_size[0] == kernel_size[1] and kernel_size[0] > 5 and padding == (kernel_size[0] // 2, kernel_size[1] // 2)
-
-    if attempt_use_lk_impl and need_large_impl:
-        print('---------------- trying to import iGEMM implementation for large-kernel conv')
-        try:
-            from depthwise_conv2d_implicit_gemm import DepthWiseConv2dImplicitGEMM
-            print('---------------- found iGEMM implementation ')
-        except:
-            DepthWiseConv2dImplicitGEMM = None
-            print('---------------- found no iGEMM. use original conv. follow https://github.com/AILab-CVC/UniRepLKNet to install it.')
-        if DepthWiseConv2dImplicitGEMM is not None and need_large_impl and in_channels == out_channels \
-                and out_channels == groups and stride == 1 and dilation == 1:
-            print(f'===== iGEMM Efficient Conv Impl, channels {in_channels}, kernel size {kernel_size} =====')
-            return DepthWiseConv2dImplicitGEMM(in_channels, kernel_size, bias=bias)
     return nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, stride=stride,
                      padding=padding, dilation=dilation, groups=groups, bias=bias)
 
@@ -238,11 +219,6 @@ class UniRepLKNetBlock(nn.Module):
                  ffn_factor=4):
         super().__init__()
         self.with_cp = with_cp
-        if deploy:
-            print('------------------------------- Note: deploy mode')
-        if self.with_cp:
-            print('****** note with_cp = True, reduce memory consumption but may slow down training ******')
-
         if kernel_size == 0:
             self.dwconv = nn.Identity()
         elif kernel_size >= 7:
@@ -409,20 +385,19 @@ class UniRepLKNet(nn.Module):
         depths = tuple(depths)
         if kernel_sizes is None:
             if depths in default_depths_to_kernel_sizes:
-                print('=========== use default kernel size ')
                 kernel_sizes = default_depths_to_kernel_sizes[depths]
             else:
                 raise ValueError('no default kernel size settings for the given depths, '
                                  'please specify kernel sizes for each block, e.g., '
                                  '((3, 3), (13, 13), (13, 13, 13, 13, 13, 13), (13, 13))')
-        print(kernel_sizes)
+
         for i in range(4):
             assert len(kernel_sizes[i]) == depths[i], 'kernel sizes do not match the depths'
 
         self.with_cp = with_cp
 
         dp_rates = [x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))]
-        print('=========== drop path rates: ', dp_rates)
+
 
         self.downsample_layers = nn.ModuleList()
         self.downsample_layers.append(nn.Sequential(
