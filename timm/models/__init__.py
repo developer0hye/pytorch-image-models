@@ -82,6 +82,7 @@ from .vision_transformer_sam import *
 from .vitamin import *
 from .volo import *
 from .vovnet import *
+from .unireplknet import *
 from .xception import *
 from .xception_aligned import *
 from .xcit import *
