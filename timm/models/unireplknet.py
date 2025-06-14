@@ -593,44 +593,6 @@ def _create_unireplknet(variant, pretrained=False, **kwargs):
         **kwargs,
     )
 
-@register_model
-def unireplknet_a(pretrained: bool = False, **kwargs) -> UniRepLKNet:
-    model = _create_unireplknet('unireplknet_a', pretrained=pretrained, depths=UniRepLKNet_A_F_P_depths, dims=(40, 80, 160, 320), **kwargs)
-    return model
-
-@register_model
-def unireplknet_f(pretrained: bool = False, **kwargs) -> UniRepLKNet:
-    return _create_unireplknet('unireplknet_f', pretrained=pretrained, depths=UniRepLKNet_A_F_P_depths, dims=(48, 96, 192, 384), **kwargs)
-
-@register_model
-def unireplknet_p(pretrained: bool = False, **kwargs) -> UniRepLKNet:
-    return _create_unireplknet('unireplknet_p', pretrained=pretrained, depths=UniRepLKNet_A_F_P_depths, dims=(64, 128, 256, 512), **kwargs)
-
-@register_model
-def unireplknet_n(pretrained: bool = False, **kwargs) -> UniRepLKNet:
-    return _create_unireplknet('unireplknet_n', pretrained=pretrained, depths=UniRepLKNet_N_depths, dims=(80, 160, 320, 640), **kwargs)
-
-@register_model
-def unireplknet_t(pretrained: bool = False, **kwargs) -> UniRepLKNet:
-    return _create_unireplknet('unireplknet_t', pretrained=pretrained, depths=UniRepLKNet_T_depths, dims=(80, 160, 320, 640), **kwargs)
-
-@register_model
-def unireplknet_s(pretrained: bool = False, **kwargs) -> UniRepLKNet:
-    return _create_unireplknet('unireplknet_s', pretrained=pretrained, depths=UniRepLKNet_S_B_L_XL_depths, dims=(96, 192, 384, 768), **kwargs)
-
-@register_model
-def unireplknet_b(pretrained: bool = False, **kwargs) -> UniRepLKNet:
-    return _create_unireplknet('unireplknet_b', pretrained=pretrained, depths=UniRepLKNet_S_B_L_XL_depths, dims=(128, 256, 512, 1024), **kwargs)
-
-@register_model
-def unireplknet_l(pretrained: bool = False, **kwargs) -> UniRepLKNet:
-    return _create_unireplknet('unireplknet_l', pretrained=pretrained, depths=UniRepLKNet_S_B_L_XL_depths, dims=(192, 384, 768, 1536), **kwargs)
-
-@register_model
-def unireplknet_xl(pretrained: bool = False, **kwargs) -> UniRepLKNet:
-    return _create_unireplknet('unireplknet_xl', pretrained=pretrained, depths=UniRepLKNet_S_B_L_XL_depths, dims=(256, 512, 1024, 2048), **kwargs)
-
-
 def _cfg(url='', hf_hub_id='', hf_hub_filename='', **kwargs):
     return {
         'url': url,
@@ -642,7 +604,7 @@ def _cfg(url='', hf_hub_id='', hf_hub_filename='', **kwargs):
         'first_conv': 'downsample_layers.0.0', 'classifier': 'head',
         'license': 'apache-2.0',
         **kwargs
-    }
+}
 
 
 def _cfg_22k(url='', hf_hub_id='', hf_hub_filename='', **kwargs):
@@ -654,22 +616,95 @@ def _cfg_384(url='', hf_hub_id='', hf_hub_filename='', **kwargs):
 
 
 default_cfgs = generate_default_cfgs({
-    'unireplknet_a.in1k': _cfg(hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_a_in1k_224_acc77.03.pth'),
-    'unireplknet_f.in1k': _cfg(hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_f_in1k_224_acc78.58.pth'),
-    'unireplknet_p.in1k': _cfg(hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_p_in1k_224_acc80.23.pth'),
-    'unireplknet_n.in1k': _cfg(hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_n_in1k_224_acc81.64.pth'),
-    'unireplknet_t.in1k': _cfg(hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_t_in1k_224_acc83.21.pth'),
-    'unireplknet_s.in1k': _cfg(hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_s_in1k_224_acc83.91.pth'),
-    'unireplknet_s.in22k': _cfg_22k(hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_s_in22k_pretrain.pth'),
-    'unireplknet_s.in22k_ft_in1k': _cfg_384(hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_s_in22k_to_in1k_384_acc86.44.pth'),
-    'unireplknet_b.in22k': _cfg_22k(hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_b_in22k_pretrain.pth'),
-    'unireplknet_b.in22k_ft_in1k': _cfg_384(hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_b_in22k_to_in1k_384_acc87.40.pth'),
-    'unireplknet_l.in22k': _cfg_22k(hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_l_in22k_pretrain.pth'),
-    'unireplknet_l.in22k_ft_in1k': _cfg_384(hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_l_in22k_to_in1k_384_acc87.88.pth'),
-    'unireplknet_xl.in22k': _cfg_22k(hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_xl_in22k_pretrain.pth'),
-    'unireplknet_xl.in22k_ft_in1k': _cfg_384(hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_xl_in22k_to_in1k_384_acc87.96.pth'),
+    'unireplknet_a.in1k': _cfg(
+        url='https://huggingface.co/DingXiaoH/UniRepLKNet/resolve/main/unireplknet_a_in1k_224_acc77.03.pth',
+        hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_a_in1k_224_acc77.03.pth'),
+    'unireplknet_f.in1k': _cfg(
+        url='https://huggingface.co/DingXiaoH/UniRepLKNet/resolve/main/unireplknet_f_in1k_224_acc78.58.pth',
+        hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_f_in1k_224_acc78.58.pth'),
+    'unireplknet_p.in1k': _cfg(
+        url='https://huggingface.co/DingXiaoH/UniRepLKNet/resolve/main/unireplknet_p_in1k_224_acc80.23.pth',
+        hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_p_in1k_224_acc80.23.pth'),
+    'unireplknet_n.in1k': _cfg(
+        url='https://huggingface.co/DingXiaoH/UniRepLKNet/resolve/main/unireplknet_n_in1k_224_acc81.64.pth',
+        hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_n_in1k_224_acc81.64.pth'),
+    'unireplknet_t.in1k': _cfg(
+        url='https://huggingface.co/DingXiaoH/UniRepLKNet/resolve/main/unireplknet_t_in1k_224_acc83.21.pth',
+        hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_t_in1k_224_acc83.21.pth'),
+    'unireplknet_s.in1k': _cfg(
+        url='https://huggingface.co/DingXiaoH/UniRepLKNet/resolve/main/unireplknet_s_in1k_224_acc83.91.pth',
+        hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_s_in1k_224_acc83.91.pth'),
+    'unireplknet_s.in22k': _cfg_22k(
+        url='https://huggingface.co/DingXiaoH/UniRepLKNet/resolve/main/unireplknet_s_in22k_pretrain.pth',
+        hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_s_in22k_pretrain.pth'),
+    'unireplknet_s.in22k_ft_in1k': _cfg_384(
+        url='https://huggingface.co/DingXiaoH/UniRepLKNet/resolve/main/unireplknet_s_in22k_to_in1k_384_acc86.44.pth',
+        hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_s_in22k_to_in1k_384_acc86.44.pth'),
+    'unireplknet_b.in22k': _cfg_22k(
+        url='https://huggingface.co/DingXiaoH/UniRepLKNet/resolve/main/unireplknet_b_in22k_pretrain.pth',
+        hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_b_in22k_pretrain.pth'),
+    'unireplknet_b.in22k_ft_in1k': _cfg_384(
+        url='https://huggingface.co/DingXiaoH/UniRepLKNet/resolve/main/unireplknet_b_in22k_to_in1k_384_acc87.40.pth',
+        hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_b_in22k_to_in1k_384_acc87.40.pth'),
+    'unireplknet_l.in22k': _cfg_22k(
+        url='https://huggingface.co/DingXiaoH/UniRepLKNet/resolve/main/unireplknet_l_in22k_pretrain.pth',
+        hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_l_in22k_pretrain.pth'),
+    'unireplknet_l.in22k_ft_in1k': _cfg_384(
+        url='https://huggingface.co/DingXiaoH/UniRepLKNet/resolve/main/unireplknet_l_in22k_to_in1k_384_acc87.88.pth',
+        hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_l_in22k_to_in1k_384_acc87.88.pth'),
+    'unireplknet_xl.in22k': _cfg_22k(
+        url='https://huggingface.co/DingXiaoH/UniRepLKNet/resolve/main/unireplknet_xl_in22k_pretrain.pth',
+        hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_xl_in22k_pretrain.pth'),
+    'unireplknet_xl.in22k_ft_in1k': _cfg_384(
+        url='https://huggingface.co/DingXiaoH/UniRepLKNet/resolve/main/unireplknet_xl_in22k_to_in1k_384_acc87.96.pth',
+        hf_hub_id='DingXiaoH/UniRepLKNet', hf_hub_filename='unireplknet_xl_in22k_to_in1k_384_acc87.96.pth'),
 })
 
+
+@register_model
+def unireplknet_a(pretrained: bool = False, **kwargs) -> UniRepLKNet:
+    model = _create_unireplknet('unireplknet_a', pretrained=pretrained, depths=UniRepLKNet_A_F_P_depths, dims=(40, 80, 160, 320), **kwargs)
+    return model
+
+
+@register_model
+def unireplknet_f(pretrained: bool = False, **kwargs) -> UniRepLKNet:
+    return _create_unireplknet('unireplknet_f', pretrained=pretrained, depths=UniRepLKNet_A_F_P_depths, dims=(48, 96, 192, 384), **kwargs)
+
+
+@register_model
+def unireplknet_p(pretrained: bool = False, **kwargs) -> UniRepLKNet:
+    return _create_unireplknet('unireplknet_p', pretrained=pretrained, depths=UniRepLKNet_A_F_P_depths, dims=(64, 128, 256, 512), **kwargs)
+
+
+@register_model
+def unireplknet_n(pretrained: bool = False, **kwargs) -> UniRepLKNet:
+    return _create_unireplknet('unireplknet_n', pretrained=pretrained, depths=UniRepLKNet_N_depths, dims=(80, 160, 320, 640), **kwargs)
+
+
+@register_model
+def unireplknet_t(pretrained: bool = False, **kwargs) -> UniRepLKNet:
+    return _create_unireplknet('unireplknet_t', pretrained=pretrained, depths=UniRepLKNet_T_depths, dims=(80, 160, 320, 640), **kwargs)
+
+
+@register_model
+def unireplknet_s(pretrained: bool = False, **kwargs) -> UniRepLKNet:
+    return _create_unireplknet('unireplknet_s', pretrained=pretrained, depths=UniRepLKNet_S_B_L_XL_depths, dims=(96, 192, 384, 768), **kwargs)
+
+
+@register_model
+def unireplknet_b(pretrained: bool = False, **kwargs) -> UniRepLKNet:
+    return _create_unireplknet('unireplknet_b', pretrained=pretrained, depths=UniRepLKNet_S_B_L_XL_depths, dims=(128, 256, 512, 1024), **kwargs)
+
+
+@register_model
+def unireplknet_l(pretrained: bool = False, **kwargs) -> UniRepLKNet:
+    return _create_unireplknet('unireplknet_l', pretrained=pretrained, depths=UniRepLKNet_S_B_L_XL_depths, dims=(192, 384, 768, 1536), **kwargs)
+
+
+@register_model
+def unireplknet_xl(pretrained: bool = False, **kwargs) -> UniRepLKNet:
+    return _create_unireplknet('unireplknet_xl', pretrained=pretrained, depths=UniRepLKNet_S_B_L_XL_depths, dims=(256, 512, 1024, 2048), **kwargs)
 
 
 
