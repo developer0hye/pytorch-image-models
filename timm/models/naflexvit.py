@@ -2362,6 +2362,7 @@ def naflexvit_base_patch16_siglip(pretrained: bool = False, **kwargs) -> NaFlexV
         num_heads=12,
         act_layer='gelu_tanh',
         global_pool='map',
+        pos_embed_interp_mode='bilinear',
     )
     model = _create_naflexvit('naflexvit_base_patch16_siglip', pretrained=pretrained, cfg=cfg, **kwargs)
     return model
@@ -2379,6 +2380,7 @@ def naflexvit_so400m_patch16_siglip(pretrained: bool = False, **kwargs) -> NaFle
         mlp_ratio=3.7362,
         act_layer='gelu_tanh',
         global_pool='map',
+        pos_embed_interp_mode='bilinear',
     )
     model = _create_naflexvit('naflexvit_so400m_patch16_siglip', pretrained=pretrained, cfg=cfg, **kwargs)
     return model
