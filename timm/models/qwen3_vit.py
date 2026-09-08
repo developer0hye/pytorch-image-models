@@ -491,6 +491,30 @@ default_cfgs = generate_default_cfgs({
         hf_hub_id='Qwen/Qwen3.5-9B', hf_hub_filename='model.safetensors-00004-of-00004.safetensors',
         num_classes=4096, origin_url='https://huggingface.co/Qwen/Qwen3.5-9B',
     ),
+
+    # Qwen3-VL towers: same architecture. The three DeepStack projectors these checkpoints carry
+    # (`deepstack_merger_list`, mid-block tokens -> LLM width) are not part of the backbone and are dropped,
+    # the backbone and main projector load fully; use forward_intermediates() for the mid-block tokens.
+    'qwen3_vit_306m.qwen3_vl_4b': _cfg(
+        hf_hub_id='Qwen/Qwen3-VL-4B-Instruct', hf_hub_filename='model-00002-of-00002.safetensors',
+        num_classes=2560, origin_url='https://huggingface.co/Qwen/Qwen3-VL-4B-Instruct',
+    ),
+    'qwen3_vit_416m.qwen3_vl_8b': _cfg(
+        hf_hub_id='Qwen/Qwen3-VL-8B-Instruct', hf_hub_filename='model-00004-of-00004.safetensors',
+        num_classes=4096, origin_url='https://huggingface.co/Qwen/Qwen3-VL-8B-Instruct',
+    ),
+    'qwen3_vit_416m.qwen3_vl_32b': _cfg(
+        hf_hub_id='Qwen/Qwen3-VL-32B-Instruct', hf_hub_filename='model-00014-of-00014.safetensors',
+        num_classes=5120, origin_url='https://huggingface.co/Qwen/Qwen3-VL-32B-Instruct',
+    ),
+    'qwen3_vit_416m.qwen3_vl_30b_a3b': _cfg(
+        hf_hub_id='Qwen/Qwen3-VL-30B-A3B-Instruct', hf_hub_filename='model-00013-of-00013.safetensors',
+        num_classes=2048, origin_url='https://huggingface.co/Qwen/Qwen3-VL-30B-A3B-Instruct',
+    ),
+    'qwen3_vit_416m.qwen3_vl_235b_a22b': _cfg(
+        hf_hub_id='Qwen/Qwen3-VL-235B-A22B-Instruct', hf_hub_filename='model-00001-of-00096.safetensors',
+        num_classes=4096, origin_url='https://huggingface.co/Qwen/Qwen3-VL-235B-A22B-Instruct',
+    ),
 })
 
 
